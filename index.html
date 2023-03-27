@@ -1,0 +1,515 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Databox</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ----------------------------------- VARIABLE -----------------------------------  */
+
+    :root {
+      --bg-color: #F9F9F9;
+      --title-color: #1B126B;
+      --text-color: #5F5997;
+      --primary-color: #4B59C9;
+      --primary-color-hover: #1B126B;
+
+      --secondary-color-light: #DEF8F2;
+      --secondary-color: #20CB9C;
+      --light-color: #fff;
+      --bad-color: #EC8480;
+      --medium-color: #DEBB6C;
+      --good-color: #77C28C;
+      --tooltip-color: #1B126B;
+
+      --text-xl: 20px;
+      --text-lg: 18px;
+      --text-md: 16px;
+      --text-sm: 14px;
+      --text-xs: 10px;
+    }
+
+    /* ------------------------------------ RESET ------------------------------------  */
+
+    /* html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed,
+    figure, figcaption, footer, header, hgroup,
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    } */
+    /* HTML5 display-role reset for older browsers */
+    /* article, aside, details, figcaption, figure,
+    footer, header, hgroup, menu, nav, section {
+    display: block;
+    } */
+
+    /* ------------------------------------ CSS ------------------------------------  */
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      line-height: 1;
+      font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+    }
+
+    .container {
+      /* width: 1000px; */
+      display: flex;
+      justify-content: center;
+      margin: 100px auto;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .grid {
+      display: flex;
+      gap: 24px;
+    }
+
+    .grid--btn {
+      margin-top: 40px;
+    }
+
+    .btn {
+      width: 100%;
+      text-decoration: none;
+      padding: 12px 12px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: var(--text-sm);
+      transition: all 300ms;
+    }
+
+    .btn--primary {
+      background-color: var(--primary-color);
+      color: var(--light-color);
+    }
+
+    .btn--primary:hover {
+      background-color: var(--primary-color-hover);
+    }
+
+    .btn--secondary {
+      background-color: var(--secondary-color-light);
+      color: var(--secondary-color);
+    }
+
+    .btn--secondary:hover {
+      background-color: var(--secondary-color);
+      color: var(--light-color);
+    }
+
+    .box {
+      background-color: var(--light-color);
+      border-radius: 24px;
+      text-align: center;
+      padding: 40px;
+      position: relative;
+      width: 400px;
+    }
+
+    .box__title {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--title-color);
+      margin: 0;
+    }
+
+    .tooltip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      padding: 16px;
+    }
+
+    .tooltip__wrapper {
+      position: relative;
+    }
+
+    .tooltip__icon {
+      fill: #CDCBD8;
+      cursor: pointer;
+      transition: all 300ms;
+    }
+
+    .tooltip__icon:hover {
+      fill: #827BAC;
+    }
+
+    .tooltip__icon:hover+.tooltip__content {
+      visibility: visible;
+      opacity: 1;
+      transition: all 300ms;
+    }
+
+    .tooltip__content {
+      background-color: var(--tooltip-color);
+      color: var(--light-color);
+      font-size: var(--text-xs);
+      padding: 1px 2px;
+      border-radius: 6px;
+      width: 200px;
+      line-height: 1.2;
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .tooltip__content:after {
+      content: '';
+      width: 0;
+      height: 0;
+      position: absolute;
+      left: 50%;
+      top: -8px;
+      transform: translateX(-50%);
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid var(--tooltip-color);
+      border-left: 8px solid transparent;
+    }
+
+    .gauge {
+      position: relative;
+      height: 135px;
+      overflow: hidden;
+    }
+
+    .gauge:after {
+      content: '';
+      display: block;
+      width: 150px;
+      height: 150px;
+      position: absolute;
+      top: 58px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 100%;
+      z-index: 1;
+      border: 2px dashed #B5C4CF;
+    }
+
+    .gauge__score {
+      position: absolute;
+      top: 65%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+      color: black;
+      font-family: 'Amaranth', sans-serif;
+      color: var(--title-color);
+      z-index: 2;
+    }
+
+    .gauge__chart {
+      position: relative;
+      z-index: 2;
+    }
+
+    .gauge__text {
+      font-size: var(--text-lg);
+      color: var(--text-color);
+    }
+
+    .gauge__note {
+      font-weight: 700;
+    }
+
+    .gauge__note.bad {
+      color: var(--bad-color);
+    }
+
+    .gauge__note.medium {
+      color: var(--medium-color);
+    }
+
+    .gauge__note.excellent {
+      color: var(--good-color);
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="box">
+
+      <div class="tooltip">
+        <div class="tooltip__wrapper">
+          <svg class="tooltip__icon" width="20" height="21" viewBox="0 0 20 21" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M10 1.1778C4.93739 1.1778 0.833336 5.28185 0.833336 10.3445C0.833336 15.4071 4.93739 19.5111 10 19.5111C15.0626 19.5111 19.1667 15.4071 19.1667 10.3445C19.1667 5.28185 15.0626 1.1778 10 1.1778ZM10 6.1778C9.53977 6.1778 9.16667 6.55089 9.16667 7.01113C9.16667 7.47137 9.53977 7.84446 10 7.84446H10.0083C10.4686 7.84446 10.8417 7.47137 10.8417 7.01113C10.8417 6.55089 10.4686 6.1778 10.0083 6.1778H10ZM10.8333 10.3445C10.8333 9.88422 10.4602 9.51113 10 9.51113C9.53977 9.51113 9.16667 9.88422 9.16667 10.3445V13.6778C9.16667 14.138 9.53977 14.5111 10 14.5111C10.4602 14.5111 10.8333 14.138 10.8333 13.6778V10.3445Z" />
+          </svg>
+          <div class="tooltip__content">
+            <p>Velit officia consequat duis enim velit mollit lorem lipsum.</p>
+          </div>
+        </div>
+      </div>
+
+      <h1 class="box__title">Total Stock</h1>
+
+      <div class="gauge">
+        <canvas id="chart-01" class="gauge__chart" data-score="80" data-target="01"></canvas>
+        <div id="chart-text-01"></div>
+      </div>
+
+      <p class="gauge__text">You score is <span id="note-01" class="gauge__note"></span></p>
+
+      <div class="grid grid--btn">
+        <a class="btn btn--secondary" href="#">Voir mon conseil</a>
+        <a class="btn btn--primary" href="#">Voir plus</a>
+      </div>
+
+    </div>
+
+    <div class="box">
+
+      <div class="tooltip">
+        <div class="tooltip__wrapper">
+          <svg class="tooltip__icon" width="20" height="21" viewBox="0 0 20 21" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M10 1.1778C4.93739 1.1778 0.833336 5.28185 0.833336 10.3445C0.833336 15.4071 4.93739 19.5111 10 19.5111C15.0626 19.5111 19.1667 15.4071 19.1667 10.3445C19.1667 5.28185 15.0626 1.1778 10 1.1778ZM10 6.1778C9.53977 6.1778 9.16667 6.55089 9.16667 7.01113C9.16667 7.47137 9.53977 7.84446 10 7.84446H10.0083C10.4686 7.84446 10.8417 7.47137 10.8417 7.01113C10.8417 6.55089 10.4686 6.1778 10.0083 6.1778H10ZM10.8333 10.3445C10.8333 9.88422 10.4602 9.51113 10 9.51113C9.53977 9.51113 9.16667 9.88422 9.16667 10.3445V13.6778C9.16667 14.138 9.53977 14.5111 10 14.5111C10.4602 14.5111 10.8333 14.138 10.8333 13.6778V10.3445Z" />
+          </svg>
+          <div class="tooltip__content">
+            <p>Velit officia consequat duis enim velit mollit lorem lipsum.</p>
+          </div>
+        </div>
+      </div>
+
+      <h1 class="box__title">Total Stock</h1>
+
+      <div class="gauge">
+        <canvas id="chart-02" class="gauge__chart" data-score="50"></canvas>
+        <div id="chart-text-02"></div>
+      </div>
+
+      <p class="gauge__text">You score is <span id="note-02" class="gauge__note"></span></p>
+
+      <div class="grid grid--btn">
+        <a class="btn btn--secondary" href="#">Voir mon conseil</a>
+        <a class="btn btn--primary" href="#">Voir plus</a>
+      </div>
+
+    </div>
+
+    <div class="box">
+
+      <div class="tooltip">
+        <div class="tooltip__wrapper">
+          <svg class="tooltip__icon" width="20" height="21" viewBox="0 0 20 21" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M10 1.1778C4.93739 1.1778 0.833336 5.28185 0.833336 10.3445C0.833336 15.4071 4.93739 19.5111 10 19.5111C15.0626 19.5111 19.1667 15.4071 19.1667 10.3445C19.1667 5.28185 15.0626 1.1778 10 1.1778ZM10 6.1778C9.53977 6.1778 9.16667 6.55089 9.16667 7.01113C9.16667 7.47137 9.53977 7.84446 10 7.84446H10.0083C10.4686 7.84446 10.8417 7.47137 10.8417 7.01113C10.8417 6.55089 10.4686 6.1778 10.0083 6.1778H10ZM10.8333 10.3445C10.8333 9.88422 10.4602 9.51113 10 9.51113C9.53977 9.51113 9.16667 9.88422 9.16667 10.3445V13.6778C9.16667 14.138 9.53977 14.5111 10 14.5111C10.4602 14.5111 10.8333 14.138 10.8333 13.6778V10.3445Z" />
+          </svg>
+          <div class="tooltip__content">
+            <p>Velit officia consequat duis enim velit mollit lorem lipsum.</p>
+          </div>
+        </div>
+      </div>
+
+      <h1 class="box__title">Total Stock</h1>
+
+      <div class="gauge">
+        <canvas id="chart-03" class="gauge__chart" data-score="20"></canvas>
+        <div id="chart-text-03"></div>
+      </div>
+
+      <p class="gauge__text">You score is <span id="note-03" class="gauge__note"></span></p>
+
+      <div class="grid grid--btn">
+        <a class="btn btn--secondary" href="#">Voir mon conseil</a>
+        <a class="btn btn--primary" href="#">Voir plus</a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+  <script src="../gauge.js"></script>
+
+  <script>
+    var opts = {
+      angle: 0, // The span of the gauge arc
+      lineWidth: 0.1, // The line thickness
+      radiusScale: .8, // Relative radius
+      pointer: {
+        length: 0.48, // // Relative to gauge radius
+        strokeWidth: 0.035, // The thickness
+        color: '#fff', // Fill color
+        iconPath: '../cursor.svg', // Icon image source
+        iconScale: 4.5, // Size scaling factor
+        iconAngle: 0 // Rotation offset angle, degrees
+      },
+      limitMax: false, // If false, max value increases automatically if value > maxValue
+      limitMin: false, // If true, the min value of the gauge will be fixed
+      colorStart: '#6FADCF', // Colors
+      colorStop: '#8FC0DA', // just experiment with them
+      strokeColor: '#E0E0E0', // to see which ones work best for you
+      generateGradient: true,
+      highDpiSupport: true, // High resolution support
+      staticZones: [{
+          strokeStyle: "#F03E3E",
+          min: 0,
+          max: 30
+        }, // Red from 0 to 30
+        {
+          strokeStyle: "#EFC974",
+          min: 31,
+          max: 70
+        }, // Yellow
+        {
+          strokeStyle: "#87DEA0",
+          min: 71,
+          max: 100
+        } // Green
+      ]
+
+    };
+
+    var dataScore01 = $('#chart-01').data('score');
+    var target01 = document.getElementById('chart-01');
+    var gauge01 = new Gauge(target01).setOptions(opts);
+    document.getElementById("chart-text-01").className = "gauge__score";
+    gauge01.setTextField(document.getElementById("chart-text-01"));
+    gauge01.maxValue = 100;
+    gauge01.setMinValue(0);
+    gauge01.set(dataScore01);
+    gauge01.animationSpeed = 32;
+
+    var dataScore02 = $('#chart-02').data('score');
+    var target02 = document.getElementById('chart-02');
+    var gauge02 = new Gauge(target02).setOptions(opts);
+    document.getElementById("chart-text-02").className = "gauge__score";
+    gauge02.setTextField(document.getElementById("chart-text-02"));
+    gauge02.maxValue = 100;
+    gauge02.setMinValue(0);
+    gauge02.set(dataScore02);
+    gauge02.animationSpeed = 32;
+
+    var dataScore03 = $('#chart-03').data('score');
+    var target03 = document.getElementById('chart-03');
+    var gauge03 = new Gauge(target03).setOptions(opts);
+    document.getElementById("chart-text-03").className = "gauge__score";
+    gauge03.setTextField(document.getElementById("chart-text-03"));
+    gauge03.maxValue = 100;
+    gauge03.setMinValue(0);
+    gauge03.set(dataScore03);
+    gauge03.animationSpeed = 32;
+
+
+    function val01() {
+      val = gauge01.value;
+      note = $('#note-01');
+      if (val <= 30) {
+        $(note).text('Bad');
+        $(note).addClass('bad');
+        $(note).removeClass('medium');
+        $(note).removeClass('excellent');
+      }
+      if (val > 30) {
+        $(note).text('Medium');
+        $(note).addClass('medium');
+        $(note).removeClass('bad');
+        $(note).removeClass('excellent');
+      }
+      if (val > 70) {
+        $(note).text('Excellent');
+        $(note).addClass('excellent');
+        $(note).removeClass('medium');
+        $(note).removeClass('bad');
+      }
+    }
+
+    function val02() {
+      val = gauge02.value;
+      note = $('#note-02');
+      if (val <= 30) {
+        $(note).text('Bad');
+        $(note).addClass('bad');
+        $(note).removeClass('medium');
+        $(note).removeClass('excellent');
+      }
+      if (val > 30) {
+        $(note).text('Medium');
+        $(note).addClass('medium');
+        $(note).removeClass('bad');
+        $(note).removeClass('excellent');
+      }
+      if (val > 70) {
+        $(note).text('Excellent');
+        $(note).addClass('excellent');
+        $(note).removeClass('medium');
+        $(note).removeClass('bad');
+      }
+    }
+
+    function val03() {
+      val = gauge03.value;
+      note = $('#note-03');
+      if (val <= 30) {
+        $(note).text('Bad');
+        $(note).addClass('bad');
+        $(note).removeClass('medium');
+        $(note).removeClass('excellent');
+      }
+      if (val > 30) {
+        $(note).text('Medium');
+        $(note).addClass('medium');
+        $(note).removeClass('bad');
+        $(note).removeClass('excellent');
+      }
+      if (val > 70) {
+        $(note).text('Excellent');
+        $(note).addClass('excellent');
+        $(note).removeClass('medium');
+        $(note).removeClass('bad');
+      }
+    }
+    
+    val01();
+    val02();
+    val03();
+
+  </script>
+
+
+</body>
+
+</html>

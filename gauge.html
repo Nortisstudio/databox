@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Databox</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ----------------------------------- VARIABLE -----------------------------------  */
+
+    :root {
+      --bg-color: #F9F9F9;
+      --title-color: #1B126B;
+      --tooltip-color: #1B126B;
+      --light-color: #fff;
+
+      --text-xl: 20px;
+      --text-lg: 18px;
+      --text-md: 16px;
+      --text-sm: 14px;
+      --text-xs: 10px;
+    }
+
+    /* ------------------------------------ CSS ------------------------------------  */
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      line-height: 1;
+      font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      margin: 100px auto;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    /* -------- BOX --------  */
+
+    .box {
+      background-color: var(--light-color);
+      border-radius: 24px;
+      text-align: center;
+      padding: 40px;
+      position: relative;
+      width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .box__title {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--title-color);
+      margin: 0 0 24px 0;
+    }
+
+    /* -------- TOOLTIP --------  */
+
+    .tooltip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      padding: 16px;
+    }
+
+    .tooltip__wrapper {
+      position: relative;
+    }
+
+    .tooltip__icon {
+      fill: #CDCBD8;
+      cursor: pointer;
+      transition: all 300ms;
+    }
+
+    .tooltip__icon:hover {
+      fill: #827BAC;
+    }
+
+    .tooltip__icon:hover+.tooltip__content {
+      visibility: visible;
+      opacity: 1;
+      transition: all 300ms;
+    }
+
+    .tooltip__content {
+      background-color: var(--tooltip-color);
+      color: var(--light-color);
+      font-size: var(--text-xs);
+      padding: 1px 2px;
+      border-radius: 6px;
+      width: 200px;
+      line-height: 1.2;
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      visibility: hidden;
+      opacity: 0;
+      z-index: 9999;
+    }
+
+    .tooltip__content:after {
+      content: '';
+      width: 0;
+      height: 0;
+      position: absolute;
+      left: 50%;
+      top: -8px;
+      transform: translateX(-50%);
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid var(--tooltip-color);
+      border-left: 8px solid transparent;
+    }
+
+    .gauge {
+      background: url("gauge@2x.png") no-repeat bottom center;
+      position: relative;
+      width: 200px;
+      height: 100px;
+      background-size: contain;
+    }
+
+    .gauge__cursor {
+      display: bloÊck;
+      position: absolute;
+      bottom: -25px;
+      right: calc(50% - 25px);
+      transform-origin: 141px 28px;
+      transform: rotate(10deg);
+      transition: 0.3s;
+      width: 166px;
+      height: 56px;
+    }
+
+    .gauge__cursor:after {
+      content: '';
+      width: 30px;
+      height: 30px;
+      background: url("cursor-no-shadow.png") no-repeat;
+      background-size: contain;
+      position: absolute;
+      top: 50%;
+      left: 36px;
+      transform: translateY(-50%);
+    }
+
+    .form {
+      margin-top: 24px;
+    }
+
+    .form__input {
+      background-color: var(--bg-color);
+      border: 1px solid #d1d0dd;
+      padding: 8px;
+      border-radius: 8px;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- ------------------------------- BOX 05 ------------------------------- -->
+    <div class="box">
+
+      <!-- TOOLTIP -->
+      <div class="tooltip">
+        <div class="tooltip__wrapper">
+          <svg class="tooltip__icon" width="20" height="21" viewBox="0 0 20 21" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M10 1.1778C4.93739 1.1778 0.833336 5.28185 0.833336 10.3445C0.833336 15.4071 4.93739 19.5111 10 19.5111C15.0626 19.5111 19.1667 15.4071 19.1667 10.3445C19.1667 5.28185 15.0626 1.1778 10 1.1778ZM10 6.1778C9.53977 6.1778 9.16667 6.55089 9.16667 7.01113C9.16667 7.47137 9.53977 7.84446 10 7.84446H10.0083C10.4686 7.84446 10.8417 7.47137 10.8417 7.01113C10.8417 6.55089 10.4686 6.1778 10.0083 6.1778H10ZM10.8333 10.3445C10.8333 9.88422 10.4602 9.51113 10 9.51113C9.53977 9.51113 9.16667 9.88422 9.16667 10.3445V13.6778C9.16667 14.138 9.53977 14.5111 10 14.5111C10.4602 14.5111 10.8333 14.138 10.8333 13.6778V10.3445Z" />
+          </svg>
+          <div class="tooltip__content">
+            <p>Velit officia consequat duis enim velit mollit lorem lipsum.</p>
+          </div>
+        </div>
+      </div>
+
+      <h1 class="box__title">Total Stock</h1>
+
+      <!-- GAUGE -->
+      <div class="gauge">
+        <div class="gauge__needle">
+          <div class="gauge__cursor js-gauge"></div>
+        </div>
+      </div>
+
+      <form class="form">
+        <input class="form__input" type="number" />
+      </form>
+
+    </div>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+
+  <script>
+    var percentage = 46
+    var needleDegree = 0
+    $(function () {
+      $('input').on("change paste keyup", function () {
+        percentage = $(this).val()
+        moveNeedle()
+      })
+    })
+
+    function moveNeedle() {
+      // Calculate degree from percentage. It's only half a pie, so maximum degree is 180
+      needleDegree = percentage * 1.8
+
+      // Make sure the needle doens't go out of bounds
+      if (needleDegree > 180) needleDegree = 180
+      else if (needleDegree < 0) needleDegree = 0
+
+      // Move the needle
+      $('.js-gauge').css({
+        transform: "rotate(" + needleDegree + "deg)"
+      })
+    }
+  </script>
+
+</body>
+
+</html>
